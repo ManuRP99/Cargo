@@ -120,13 +120,16 @@ function drawotherGoal() {
  function drawRedArea() {
 	ctx.strokeStyle = "#ff0000";
 	ctx.strokeRect(110, 10, 100, 400);
+	ctx.strokeRect((canvas.width - 410), (canvas.height - 210), 400, 100);
  }
 
  // check red area
  function checkRed(x, y) {
 	if (110 < x && 10 < y && 210 > x && 410 > y) {
 		backToOrigin();
-		
+	}
+	else if (x > (canvas.width - 410) && y > (canvas.height - 210) && y < (canvas.height - 110)) {
+		backToOrigin();
 	}
  }
 
