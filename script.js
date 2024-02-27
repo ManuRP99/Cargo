@@ -17,6 +17,7 @@ let xVel = 0;
 let yVel = 0;
 let x = origin[0];
 let y = origin[1];
+let deaths = 0;
 
 function backToOrigin() {
 	x = origin[0];
@@ -24,6 +25,7 @@ function backToOrigin() {
 	ctx.fillStyle = '#000000';
 	ctx.fillRect(10, 10, 10000, 10000);
 	score = 0;
+	deaths++;
 	points.innerText = score;
 	actualPoints.innerText = actualScore;
 }
@@ -86,10 +88,12 @@ function borderCollision(x, y) {
  function drawGoal() {
 	ctx.strokeStyle = "#30aa30";
 	ctx.strokeRect(10, 10, 100, 100);
+	ctx.fillStyle = "#aaaaaa";
+	ctx.fillText("Pick up area", 20, 20);
  }
 
  function checkGoal(x, y) {
-	if (10 < x && 10 < y && 110 > x && 110 > y) {
+	if (10 < x && 10 < y && 110 > x && 110 > y && score < 1199) {
 		ctx.fillStyle = "#ffffff";
 		ctx.fillText("Picking up cargo!", origin[0], (canvas.height - 15));
 		showScore();
@@ -103,11 +107,13 @@ function borderCollision(x, y) {
 function drawotherGoal() {
 	ctx.strokeStyle = "#aaffaa";
 	ctx.strokeRect((canvas.width - 110), (canvas.height - 110), 100, 100);
+	ctx.fillStyle = "#aaaaaa";
+	ctx.fillText("Drop off area", (canvas.width - 100), (canvas.height - 100));
 
 }
 
  function checkAnotherGoal(x, y) {
-	if ((canvas.width - 110) < x && (canvas.height - 110) < y/* && 110 > x && 110 > y*/) {
+	if ((canvas.width - 110) < x && (canvas.height - 110) < y && score > 0) {
 		ctx.fillStyle = "#ffffff";
 		ctx.fillText("Dropping cargo!", origin[0], (canvas.height - 15));
 		showActualScore();
@@ -160,6 +166,38 @@ function showActualScore() {
 }
 
 function game() {
+	if (deaths < 4) {
+		ctx.clearRect(10, 10, (canvas.width - 20), (canvas.height - 20));
+		const hitbox = [x, (y - 10), 28, 15];
+		ctx.fillStyle = '#000000';
+		//ctx.fillRect(x, (y - 10), 28, 15);
+		ctx.fillRect(hitbox[0], hitbox[1], hitbox[2], hitbox[3]);
+		//ctx.strokeRect(hitbox[0], hitbox[1], hitbox[2], hitbox[3]);
+		x += xVel * speedMult;
+		y += yVel * speedMult;
+		ctx.strokeStyle = '#00ff00';
+		ctx.strokeText(ship, x, y);
+		drawBorder();
+		drawGoal();
+		drawotherGoal();
+		checkAnotherGoal(hitbox[0], hitbox[1]);
+		drawRedArea();
+		checkRed(hitbox[0], hitbox[1]);
+		checkGoal(hitbox[0], hitbox[1]);
+		borderCollision(hitbox[0], hitbox[1]);
+		level.innerText = speedMult;
+	} else {
+		ctx.fillStyle = "#ff0000";
+		ctx.fillRect(0, 0, 10000, 10000);
+		ctx.fillStyle = "#000000";
+		ctx.fillText("GAME OVER", origin[0], origin[1]);
+
+	}
+}
+
+setInterval(game, 8);
+/*
+while (deaths <= 3) {
 	ctx.clearRect(10, 10, (canvas.width - 20), (canvas.height - 20));
 	const hitbox = [x, (y - 10), 28, 15];
 	ctx.fillStyle = '#000000';
@@ -180,7 +218,5 @@ function game() {
 	borderCollision(hitbox[0], hitbox[1]);
 	level.innerText = speedMult;
 }
-
-setInterval(game, 4);
-
+*/
 
