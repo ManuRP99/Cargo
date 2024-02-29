@@ -26,17 +26,21 @@ body {
 .legend {
 	position: absolute;
 	top: 5px;
-	right: 5px;
+	right: 18px;
 	font-size: 12px;
+	background: none;
 }
 
 .legend p {
-	margin-top: 2px
+	margin-top: 2px;
+	background: none;
+	color: white;
 }
 
 h2 {
 	font-size: 20px;
 	display: inline;
+	background: none;
 }
 
 
