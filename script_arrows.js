@@ -2,6 +2,9 @@
 const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
 
+const textPicked = document.getElementById("points"); 
+const textDroped = document.getElementById("actual-points"); 
+const textLevel  = document.getElementById("level"); 
 
 canvas.width = (window.innerWidth - 50);
 canvas.height = (window.innerHeight - 50);
@@ -13,13 +16,15 @@ let ship = ["}{x}{"];
 let shipCargo = ["}[=]{"];
 let working = false;	// to show shipCargo
 
+let stages = ["#ff0000", "#ffff00", "#aaff00", "#00ff00"]
+
 let origin = [(Math.floor(canvas.width / 2)), (Math.floor(canvas.height / 2))];
 let x = origin[0];
 let y = origin[1];
 let speedMult = 1;
 let xVel = 0;
 let yVel = 0;
-let deaths = 0;
+let lives = 3;
 
 // left, top, right, bottom
 let hitbox = [x, (y-10), (x + 31), (y + 14)];
@@ -30,21 +35,27 @@ let dropoffArea = [canvas.width - 100, canvas.height - 100, 100, 100];
 let topWall = [125, 0, 100, origin[1] + 100];
 let botWall = [canvas.width - 225, canvas.height - (origin[1] + 100), 100, origin[1] + 100];
 
+// cargo numbers
+let pickedCargo = 0;
+let dropedCargo = 0;
+
+
+
 // arrow keys event listeners
 document.body.addEventListener('keydown', (ev) => {
-	if (ev.key == 'k'){
+	if (ev.key == 'ArrowUp'){
 		yVel = -1;
 		xVel = 0;
 	}
-	if (ev.key == 'j'){
+	if (ev.key == 'ArrowDown'){
 		yVel = 1;
 		xVel = 0;
 	}
-	if (ev.key == 'h'){
+	if (ev.key == 'ArrowLeft'){
 		xVel = -1;
 		yVel = 0;
 	}
-	if (ev.key == 'l'){
+	if (ev.key == 'ArrowRight'){
 		xVel = 1;
 		yVel = 0;
 	}
@@ -74,28 +85,7 @@ const staticFrame = () => {
 	ctx.strokeRect(topWall[0], topWall[1], topWall[2], topWall[3]);
 	ctx.strokeRect(botWall[0], botWall[1], botWall[2], botWall[3]);
 };
-
-// the fguuuuuuucuaushfaskjdfhaughacñdgfdhsgasdLAKSJDÑFAŚDJGSf
-let backgroundY = 0;
-const background = () => {
-	for (let i = 0; i < 10; i++) {
-		moveBackground(i);
-	}
-	if (backgroundY > canvas.height + 401) {
-		backgroundY = 0;
-	}
-}
-
-const moveBackground = (pos) => {
-	backgroundY += speedMult / 15;
-	ctx.fillStyle = "#aaaaaa"
-	ctx.fillText("#", pos, backgroundY - (pos * 15));
-	ctx.fillText("#", pos * 70, backgroundY);
-	ctx.fillText("#", pos * 90, backgroundY - (pos * 18));
-	ctx.fillText("#", pos * 50, backgroundY - (pos * 20));
-	ctx.fillText("#", pos * 30, backgroundY - (pos * 19));
-};
-
+//
 //staticFrame();
 
 const resetCanvas = () => {
@@ -103,63 +93,111 @@ const resetCanvas = () => {
 	ctx.strokeStyle = "#aaffaa";
 	ctx.strokeRect(pickupArea[0], pickupArea[1], pickupArea[2], pickupArea[3]);
 	ctx.strokeRect(dropoffArea[0], dropoffArea[1], dropoffArea[2], dropoffArea[3]);
+
+	ctx.fillStyle = "#000000";
+	ctx.fillRect(pickupArea[0] + 10, pickupArea[1] + 10, pickupArea[2] - 20, pickupArea[3] - 20);
+	ctx.fillRect(dropoffArea[0] + 10, dropoffArea[1] + 10, dropoffArea[2] - 20, dropoffArea[3] - 20);
+
 	ctx.strokeStyle = "#ffaaaa";
 	ctx.strokeRect(topWall[0], topWall[1], topWall[2], topWall[3]);
 	ctx.strokeRect(botWall[0], botWall[1], botWall[2], botWall[3]);
 	working = false;
+	textPicked.innerHTML = pickedCargo;
+	textDroped.innerHTML = dropedCargo;
+	textLevel.innerHTML = speedMult;
 };
 
 const collisions = () => {
 	wallCollision();
 	zoneCollision();
+	borderCollision();
+	if (dropedCargo > 1000) {
+		speedMult++;
+		dropedCargo = 0;
+	}
 };
 
 const zoneCollision = () => {
+
 	if ((x + 33) < 100 && (y + 8) < 100) {
 		//pickup();
-		console.log('good');
-		working = true;
+		if (pickedCargo < 1200) {
+			pickedCargo++;
+			working = true;
+		}
+
 	}
 	if ((x + 31) > dropoffArea[0] && (y + 10) > dropoffArea[1]) {
 		//dropoff();
-		console.log('good');
-		working = true;
-	}
-	
+			if (pickedCargo > 0) {
+			working = true;
+			dropedCargo++;
+			pickedCargo--;
+		}
+	}	
 };
 
 const wallCollision = () => {
 	if (x < (topWall[2] + topWall[0]) && x > (topWall[0] - 31) && (y -10) < topWall[3]) {
 		x = origin[0];
 		y = origin[1];
+		xVel = 0;
+		yVel = 0;
+		pickedCargo = 0;
+		lives--;
 	} else if (x < (botWall[0] + 100) && (x + 31) > botWall[0] && (y + 8) > botWall[1]) {
 		x = origin[0];
 		y = origin[1];
+		xVel = 0;
+		yVel = 0;
+		pickedCargo = 0;
+		lives--;
+	}
+};
+
+const borderCollision = () => {
+	if (x < 0 || (y - 10) < 0 || (x + 31) > canvas.width || (y + 8) > canvas.height) {
+		x = origin[0];
+		y = origin[1];
+		xVel = 0;
+		yVel = 0;
+		pickedCargo = 0;
+		lives--;
 	}
 };
 
 const moveShip = () => {
-	x += xVel;
-	y += yVel;
+	x += xVel * speedMult;
+	y += yVel * speedMult;
 };
 
 
 const drawShip = () => {
-	ctx.fillStyle = "#00ff00";
-	if (!working) {
-		ctx.fillText(ship, x, y);
+	ctx.fillStyle = stages[lives];
+	if (lives >= 0) {
+		if (!working) {
+			ctx.fillText(ship, x, y);
+		} else {
+			ctx.fillText(shipCargo, x, y);
+		}
 	} else {
-		ctx.fillText(shipCargo, x, y);
+
 	}
 };
 
+
 const gameFrame = () => {
-	resetCanvas();
-	background();
-	moveShip();
-	collisions();
-	drawShip();
-	
+	if (lives >= 0) {
+		resetCanvas();
+		moveShip();
+		collisions();
+		drawShip();
+	} else {
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		ctx.fillStyle = "#ff0000";
+		ctx.fillText("GAME OVER", origin[0], origin[1]);
+	}
+
 };
 
-setInterval(gameFrame, 2);
+setInterval(gameFrame, 8);

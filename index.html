@@ -4,25 +4,20 @@
 		<meta charset="utf-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 		<link rel="stylesheet" href="./styles.css"/>
-		<script src="graphics.js"></script>
-		<script src="script.js" defer></script>
-		<title>Game test</title>
+		<!--<script src="script_arrows.js" defer></script>-->
+		<title>Cargo Menu</title>
 	</head>
 	<body>
 		<div id="screen">
-			<canvas></canvas>
-			<div class="legend">
-				<p>Arrow keys: move.</p>
-				<p>Stay on the top left square to pick up cargo.</p>
-				<p>Stay on the bottom right square to drop cargo.</p>
-				<p>You get faster every 1000 cargo drops.</p>
-				<p>tip: avoid crashing!</p>
+			<div id="logo">
+				<img src="logo.png"/>
 			</div>
-			<h2 id="text-points">Onboard: <a id="points">0</a></h2>
-			<h2 id="text-a-points">Dropped: <a id="actual-points">0</a></h2>
-			<h2 id="text-level">Level: <a id="level">0</a></h2>
+			<div class="menu">
+				<h2 class="menu-item"><a href="index_hjkl.html">Use hjkl</a></h2>
+				<h2 class="menu-item"><a href="index_arrows.html">Use arrow keys</a></h2>
+				<!--<h2 class="menu-item"><a href="index_hjkl.html">Mobile</a></h2>-->
+			</div>
 		</div>
 	</body>
 </html>
 
-<!--Maybe instead of walls its easier to create red areas to avoid-->
