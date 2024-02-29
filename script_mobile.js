@@ -1,10 +1,18 @@
 
+
 const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
 
 const textPicked = document.getElementById("points"); 
 const textDroped = document.getElementById("actual-points"); 
 const textLevel  = document.getElementById("level"); 
+
+const up_ctrl = document.getElementById("up");
+const down_ctrl = document.getElementById("down");
+const left_ctrl = document.getElementById("left");
+const right_ctrl = document.getElementById("right");
+
+
 const legend = document.getElementById("legend");
 
 canvas.width = (window.innerWidth - 50);
@@ -43,24 +51,33 @@ let dropedCargo = 0;
 
 
 // arrow keys event listeners
-document.body.addEventListener('keydown', (ev) => {
-	if (ev.key == 'ArrowUp'){
-		yVel = -1;
-		xVel = 0;
-	}
-	if (ev.key == 'ArrowDown'){
-		yVel = 1;
-		xVel = 0;
-	}
-	if (ev.key == 'ArrowLeft'){
-		xVel = -1;
-		yVel = 0;
-	}
-	if (ev.key == 'ArrowRight'){
-		xVel = 1;
-		yVel = 0;
-	}
-});
+//
+
+//
+function moveUp() {
+	yVel = -1;
+	xVel = 0;
+	console.log("asdfasdf");
+}
+
+function moveDown() {
+	yVel = 1;
+	xVel = 0;
+	console.log("asdfasdf");
+}
+
+
+function moveLeft() {
+	xVel = -1;
+	yVel = 0;
+	console.log("asdfasdf");
+}
+
+function moveRight() {
+	xVel = 1;
+	yVel = 0;
+	console.log("asdfasdf");
+}
 
 
 

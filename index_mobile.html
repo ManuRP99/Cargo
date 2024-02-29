@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<link rel="stylesheet" href="./styles_mobile.css"/>
+		<!--<script src="graphics.js"></script>-->
+		<!--<script src="script.js" defer></script>-->
+		<!--<script src="script_hjkl.js" defer></script>-->
+		<script src="script_mobile.js" defer></script>
+		<title>Cargo (Mobile)</title>
+	</head>
+	<body>
+		<div id="screen">
+			<canvas></canvas>
+			<div class="legend">
+				<p>Arrow keys: move.</p>
+				<p>Stay on the top left square to pick up cargo.</p>
+				<p>Stay on the bottom right square to drop cargo.</p>
+				<p>You get faster every 1000 cargo drops.</p>
+				<p>tip: avoid crashing!</p>
+			</div>
+
+			<div id="controls">
+				<button id="left"  onclick="moveLeft()">L</button>
+				<button id="down"  onclick="moveDown()">D</button>
+				<button id="up"    onclick="moveUp()">U</button>
+				<button id="right" onclick="moveRight()">R</button>
+			</div>
+
+
+			<h2 id="text-points">Onboard: <a id="points">0</a></h2>
+			<h2 id="text-a-points">Dropped: <a id="actual-points">0</a></h2>
+			<h2 id="text-level">Level: <a id="level">0</a></h2>
+		</div>
+	</body>
+</html>
+
