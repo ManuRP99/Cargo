@@ -24,6 +24,7 @@ body {
 }
 
 .legend {
+	background-color: transparent;
 	position: absolute;
 	top: 5px;
 	right: 5px;
@@ -31,6 +32,7 @@ body {
 }
 
 .legend p {
+	background-color: transparent;
 	margin-top: 2px
 }
 
