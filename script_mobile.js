@@ -41,8 +41,8 @@ let hitbox = [x, (y-10), (x + 31), (y + 14)];
 let pickupArea = [0, 0, 100, 100];
 let dropoffArea = [canvas.width - 100, canvas.height - 100, 100, 100];
 
-let topWall = [125, 0, 10, origin[1] + 100];
-let botWall = [canvas.width - 225, canvas.height - (origin[1] + 100), 10, origin[1] + 100];
+let topWall = [125, 0, 10, origin[1] + 10];
+let botWall = [canvas.width - 125, canvas.height - (origin[1] + 100), 10, origin[1] + 100];
 
 // cargo numbers
 let pickedCargo = 0;
